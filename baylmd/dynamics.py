@@ -1,8 +1,8 @@
 
 import numpy as np
-from forcefield_ml.settings import DynamicsSettings, DynamicsEnum, ThermostatEnum
+from baylmd.settings import DynamicsSettings, DynamicsEnum, ThermostatEnum
 
-from forcefield_ml.temperature import create_bins
+from baylmd.temperature import create_bins
 
 from ase.md.langevin import Langevin
 from ase.md.verlet import VelocityVerlet

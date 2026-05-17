@@ -2,10 +2,10 @@ from typing import Tuple
 from mpi4py import MPI
 from numpy.typing import ArrayLike
 
-from forcefield_ml.forcefield import SplitMode, Forcefield
-from forcefield_ml.settings import parse_settings
+from baylmd.forcefield import SplitMode, Forcefield
+from baylmd.settings import parse_settings
 
-from forcefield_ml.workflows.forcefield_training import ForcefieldTraining
+from baylmd.workflows.forcefield_training import ForcefieldTraining
 
 import ase.parallel as parallel
 import numpy

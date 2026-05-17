@@ -1,15 +1,13 @@
 from ase import Atoms
 from typing import List
 
-from forcefield_ml.context import Context
-from forcefield_ml.helpers import randomize_structure, count_lines
-from forcefield_ml.parsing import parse_structure
-from forcefield_ml.settings import parse_settings, DynamicsEnum
+from baylmd.context import Context
+from baylmd.helpers import randomize_structure, count_lines
+from baylmd.parsing import parse_structure
+from baylmd.settings import parse_settings, DynamicsEnum
 
-from forcefield_ml.workflows.abinitio_calculation import AbinitioCalculation
-#from forcefieldml.workflows.active_learning import ActiveLearning
-#from forcefieldml.workflows.molecular_dynamics import MolecularDynamics
-from forcefield_ml.workflows.forcefield_training import ForcefieldTraining
+from baylmd.workflows.abinitio_calculation import AbinitioCalculation
+from baylmd.workflows.forcefield_training import ForcefieldTraining
 
 import subprocess
 

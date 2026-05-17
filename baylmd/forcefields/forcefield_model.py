@@ -1,11 +1,11 @@
 from numpy.typing import ArrayLike
 from scipy.sparse import csc_matrix
 
-from forcefield_ml.forcefield import Forcefield, Orbit
-from forcefield_ml.parsing import parse_tag, parse_vector_tag
-from forcefield_ml.settings import InternalSettings, Settings, ForcefieldSettings
+from baylmd.forcefield import Forcefield, Orbit
+from baylmd.parsing import parse_tag, parse_vector_tag
+from baylmd.settings import InternalSettings, Settings, ForcefieldSettings
 
-from forcefield_ml.forceModelPy import ForceModel
+from baylmd.forceModelPy import ForceModel
 
 import ase.parallel as parallel
 

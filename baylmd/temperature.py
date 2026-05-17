@@ -1,4 +1,4 @@
-from forcefield_ml.helpers import create_bins
+from baylmd.helpers import create_bins
 
 import numpy as np
 import ase.units as units

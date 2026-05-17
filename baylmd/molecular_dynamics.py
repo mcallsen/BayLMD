@@ -2,16 +2,16 @@ from ase import Atoms
 
 from mpi4py import MPI
 
-#from forcefieldml import parallel
+#from baylmd import parallel
 
-from forcefield_ml.context import Context, to_string_bayesian, to_string_dynamics
-from forcefield_ml.helpers import create_bins
-from forcefield_ml.windows import RollingWindow
-from forcefield_ml.parsing import parse_structure
-from forcefield_ml.settings import ParametersEnum, parse_settings, Settings
+from baylmd.context import Context, to_string_bayesian, to_string_dynamics
+from baylmd.helpers import create_bins
+from baylmd.windows import RollingWindow
+from baylmd.parsing import parse_structure
+from baylmd.settings import ParametersEnum, parse_settings, Settings
 
-from forcefield_ml.workflows.molecular_dynamics import MolecularDynamics
-from forcefield_ml.workflows.forcefield_training import ForcefieldTraining
+from baylmd.workflows.molecular_dynamics import MolecularDynamics
+from baylmd.workflows.forcefield_training import ForcefieldTraining
 
 import ase.units as units
 

@@ -2,16 +2,16 @@ from typing import List, Optional, Type
 
 from ase import Atoms
 
-from forcefield_ml import parallel
+from baylmd import parallel
 
-from forcefield_ml.context import Context
-from forcefield_ml.forcefields import ForcefieldModel
-from forcefield_ml.parsing import parse_bayesian_error
-from forcefield_ml.windows import RollingWindow
-from forcefield_ml.settings import Settings, DynamicsEnum, ActiveLearningSettings
-from forcefield_ml.workflow import Workflow
+from baylmd.context import Context
+from baylmd.forcefields import ForcefieldModel
+from baylmd.parsing import parse_bayesian_error
+from baylmd.windows import RollingWindow
+from baylmd.settings import Settings, DynamicsEnum, ActiveLearningSettings
+from baylmd.workflow import Workflow
 
-from forcefield_ml.workflows.molecular_dynamics import MolecularDynamics
+from baylmd.workflows.molecular_dynamics import MolecularDynamics
 
 from abc import abstractmethod
 
