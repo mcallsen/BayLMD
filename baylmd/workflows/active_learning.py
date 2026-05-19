@@ -13,67 +13,74 @@ from baylmd.workflow import Workflow
 
 from baylmd.workflows.molecular_dynamics import MolecularDynamics
 
-from abc import abstractmethod
+from abc import ABC, abstractmethod
 
-import numpy as np
 
-class Condition(object):
+class Predicate(ABC):
+    """ Abstract base class for a predicate about a Context. """
     def __init__(self, return_value: bool = True) -> None:
-        self.return_value: bool = return_value
+        self._return_value: bool = return_value
+
+    @property
+    def return_value(self) -> bool:
+        """ Immediate return value if the predicate is True. """
+        return self._return_value 
 
     @abstractmethod
     def check(self, context: Context) -> bool:
         """ Check whether the condition is met. """
 
 
-class RefitIntervalCondition(Condition):
-    """ Check whether enough iterations have passed to allow a refit. """
+class RefitInterval(Predicate):
+    """ Check whether enough iterations have passed since the last refit. """
     def __init__(self, settings: ActiveLearningSettings) -> None:
         super().__init__(False)
-        self.number: int = settings.bayesian_iterations
+        self._number: int = settings.bayesian_iterations
         
     def check(self, context: Context) -> bool:
-        number = context.iteration - context.last_refit
-        return number < self.number
+        number: int = context.iteration - context.last_refit
+        return number < self._number
 
 
-class MaxThresholdCondition(Condition):
+class MaxThreshold(Predicate):
     """ Check whether the Bayesian error is larger than the maximum allowed threshold. """
     def __init__(self, settings: ActiveLearningSettings) -> None:
         super().__init__()
-        self.threshhold = settings.bayesian_threshhold
+        self._threshhold: float = settings.bayesian_threshhold
 
     def check(self, context: Context) -> bool:
-        return context.bayesian_error > self.threshhold
+        return context.bayesian_error > self._threshhold
 
 
-class LargerThanAverageCondition(Condition):
+class LargerThanAverage(Predicate):
     """ Check whether Bayesian error is N times larger than the average. """
     def __init__(self, settings: ActiveLearningSettings) -> None:
         super().__init__()
-        self.factor = settings.bayesian_factor
+        self._factor: float = settings.bayesian_factor
 
     def check(self, context: Context) -> bool:
-        return context.bayesian_error > self.factor * context.mean_error
+        return context.bayesian_error > self._factor * context.mean_error
 
-class VASPCondition(Condition):
+
+class VASPThreshold(Predicate):
     """ Check whether Bayesian error is N times larger than the average. """
     def __init__(self, settings: ActiveLearningSettings) -> None:
         super().__init__()
-        self.factor = 1
+        self._factor: float = 1
 
     def check(self, context: Context) -> bool:
-        return context.bayesian_error > self.factor * context.vasp_criterion
+        return context.bayesian_error > self._factor * context.vasp_criterion
 
-class SkipIterationsCondition(Condition):
+
+class SkipIterations(Predicate):
     """ Skip the first N iterations. """
     def __init__(self, settings: ActiveLearningSettings) -> None:
         super().__init__(return_value=False)
-        self.skip_iterations: int = settings.skip_iterations
+        self._skip_iterations: int = settings.skip_iterations
 
     def check(self, context: Context) -> bool:
-        return context.iteration < self.skip_iterations
-    
+        return context.iteration < self._skip_iterations
+
 
 class ActiveLearning(Workflow):
     """ A workflow performing active learning of a forcefield. """
@@ -94,9 +101,9 @@ class ActiveLearning(Workflow):
         self.vasp_average = RollingWindow(10)
 
         # Setup the conditions that determine whether a refit is required.
-        self.conditions: List[Condition] = list()
-        for condition_class in [SkipIterationsCondition, RefitIntervalCondition, MaxThresholdCondition, LargerThanAverageCondition]:
-            self.conditions.append(condition_class(settings.active_learning))
+        self.predicates: List[Predicate] = list()
+        for predicate_class in [SkipIterations, RefitInterval, MaxThreshold, LargerThanAverage]:
+            self.predicates.append(predicate_class(settings.active_learning))
 
     def start(self, context: Context) -> None:
         context.iteration = self.molecular_dynamics.iteration
@@ -150,11 +157,7 @@ class ActiveLearning(Workflow):
 
     def refit_required(self, context: Context) -> bool:
         """ Check whether the forcefield should be refitted. """
-        # At the start refit after every step.
-        #if context.iteration < 2:
-        #    return True
-
-        for condition in self.conditions:
-            if condition.check(context):
-                return condition.return_value
+        for predicate in self.predicates:
+            if predicate.check(context):
+                return predicate.return_value
         return False
