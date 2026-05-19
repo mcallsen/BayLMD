@@ -3,8 +3,8 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import Optional
 
-from forcefield_ml.context import Context
-from forcefield_ml.event import Event
+from baylmd.context import Context
+from baylmd.event import Event
 
 class Workflow(ABC):
     """ Abstract base class for Workflows. """

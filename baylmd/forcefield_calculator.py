@@ -4,8 +4,8 @@ from numpy.typing import ArrayLike
 
 from ase.calculators.calculator import Calculator, all_changes
 
-from forcefield_ml.forcefield import Forcefield
-from forcefield_ml.helpers import get_displacements
+from baylmd.forcefield import Forcefield
+from baylmd.helpers import get_displacements
 
 import numpy as np
 

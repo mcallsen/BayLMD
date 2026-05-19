@@ -10,10 +10,10 @@ from csld.structure import SupercellStructure
 from csld.lattice_dynamics import init_ld_model, LDModel
 from csld.phonon.phonon import Phonon
 
-from forcefield_ml.forcefield import Forcefield, Orbit
-from forcefield_ml.helpers import wrap, TOLERANCE
-from forcefield_ml.parsing import parse_structure
-from forcefield_ml.settings import Settings
+from baylmd.forcefield import Forcefield, Orbit
+from baylmd.helpers import wrap, TOLERANCE
+from baylmd.parsing import parse_structure
+from baylmd.settings import Settings
 
 import numpy
 

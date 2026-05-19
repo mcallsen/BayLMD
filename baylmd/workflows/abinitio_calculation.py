@@ -3,10 +3,10 @@ from typing import Optional
 
 from ase.calculators.vasp import Vasp
 
-from forcefield_ml.context import Context
-from forcefield_ml.helpers import make_directories, copy_files, count_files
-from forcefield_ml.settings import INCAR_DEFAULTS, Settings
-from forcefield_ml.workflow import Workflow
+from baylmd.context import Context
+from baylmd.helpers import make_directories, copy_files, count_files
+from baylmd.settings import INCAR_DEFAULTS, Settings
+from baylmd.workflow import Workflow
 
 from os import getcwd, chdir, path
 

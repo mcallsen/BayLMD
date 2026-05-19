@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from numpy.typing import ArrayLike
 
-from forcefield_ml.parsing import type_cast
+from baylmd.parsing import type_cast
 
 import numpy
 

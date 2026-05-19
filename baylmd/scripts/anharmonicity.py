@@ -1,12 +1,12 @@
 from mpi4py import MPI
 
-from forcefield_ml.forcefield import SplitMode
-from forcefield_ml.settings import parse_settings
-from forcefield_ml.helpers import get_displacements
-from forcefield_ml.forcefields import ForcefieldModel
+from baylmd.forcefield import SplitMode
+from baylmd.settings import parse_settings
+from baylmd.helpers import get_displacements
+from baylmd.forcefields import ForcefieldModel
 
-from forcefield_ml.scripts.force_contribution import calculate_forces
-from forcefield_ml.workflows.forcefield_training import ForcefieldTraining
+from baylmd.scripts.force_contribution import calculate_forces
+from baylmd.workflows.forcefield_training import ForcefieldTraining
 
 from ase.io import read
 

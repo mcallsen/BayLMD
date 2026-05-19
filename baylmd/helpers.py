@@ -2,7 +2,7 @@ from ase import Atoms
 from numpy.typing import ArrayLike
 from typing import List, Tuple, Optional
 
-from forcefield_ml.parsing import parse_fit_data, parse_structure
+from baylmd.parsing import parse_fit_data, parse_structure
 
 import shutil
 import numpy as np

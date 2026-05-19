@@ -1,9 +1,9 @@
 from mpi4py import MPI
 
-from forcefield_ml.settings import parse_settings
-from forcefield_ml.helpers import create_bins_supercell, get_displacements
+from baylmd.settings import parse_settings
+from baylmd.helpers import create_bins_supercell, get_displacements
 
-from forcefield_ml.workflows.forcefield_training import ForcefieldTraining
+from baylmd.workflows.forcefield_training import ForcefieldTraining
 
 from ase.io import read, Trajectory
 

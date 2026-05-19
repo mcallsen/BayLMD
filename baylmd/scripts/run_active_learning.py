@@ -1,12 +1,12 @@
 from ase import Atoms
 
-from forcefield_ml import parallel
+from baylmd import parallel
 
-from forcefield_ml.context import Context, to_string_bayesian
-from forcefield_ml.parsing import parse_structure
-from forcefield_ml.settings import parse_settings
+from baylmd.context import Context, to_string_bayesian
+from baylmd.parsing import parse_structure
+from baylmd.settings import parse_settings
 
-from forcefield_ml.workflows.active_learning import ActiveLearning
+from baylmd.workflows.active_learning import ActiveLearning
 
 
 def main() -> None:

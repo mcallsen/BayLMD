@@ -1,7 +1,7 @@
 import setuptools
 
 setuptools.setup(
-    name="forcefieldml",
+    name="baylmd",
     version="1.0.0",
     author="Martin Callsen",
     author_email="mcallsen@as.edu.tw",

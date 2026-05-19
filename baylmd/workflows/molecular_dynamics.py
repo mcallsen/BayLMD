@@ -6,16 +6,16 @@ from ase.io import Trajectory
 
 from ase.md.velocitydistribution import MaxwellBoltzmannDistribution, Stationary, ZeroRotation
 
-from forcefield_ml import parallel
+from baylmd import parallel
 
-from forcefield_ml.context import Context
-from forcefield_ml.estimator import GaussianEstimator
-from forcefield_ml.helpers import initialize_file, count_lines
-from forcefield_ml.forcefields import ForcefieldModel
-from forcefield_ml.forcefield_calculator import ForcefieldCalculator
-from forcefield_ml.dynamics import dynamics_factory
-from forcefield_ml.settings import Settings, ThermostatEnum, DynamicsSettings, DynamicsEnum
-from forcefield_ml.workflow import Workflow
+from baylmd.context import Context
+from baylmd.estimator import GaussianEstimator
+from baylmd.helpers import initialize_file, count_lines
+from baylmd.forcefields import ForcefieldModel
+from baylmd.forcefield_calculator import ForcefieldCalculator
+from baylmd.dynamics import dynamics_factory
+from baylmd.settings import Settings, ThermostatEnum, DynamicsSettings, DynamicsEnum
+from baylmd.workflow import Workflow
 
 import numpy as np
 import os

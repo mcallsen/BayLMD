@@ -3,15 +3,15 @@ from typing import Optional, Type
 from numpy.typing import ArrayLike
 from ase import Atoms
 
-from forcefield_ml.context import Context
-from forcefield_ml.data_container import DataContainer
-from forcefield_ml.estimator import GaussianEstimator
-from forcefield_ml.forcefields import ForcefieldModel
-from forcefield_ml.helpers import initialize_file, get_displacements
-from forcefield_ml.metrics import Metrics
-from forcefield_ml.parsing import parse_structure
-from forcefield_ml.settings import Settings, TrainingSettings
-from forcefield_ml.workflow import Workflow
+from baylmd.context import Context
+from baylmd.data_container import DataContainer
+from baylmd.estimator import GaussianEstimator
+from baylmd.forcefields import ForcefieldModel
+from baylmd.helpers import initialize_file, get_displacements
+from baylmd.metrics import Metrics
+from baylmd.parsing import parse_structure
+from baylmd.settings import Settings, TrainingSettings
+from baylmd.workflow import Workflow
 
 from os import getcwd
 

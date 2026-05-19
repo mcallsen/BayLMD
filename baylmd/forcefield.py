@@ -4,7 +4,7 @@ from enum import Enum
 from scipy.sparse import csc_matrix, vstack
 from numpy.typing import ArrayLike
 
-from forcefield_ml.timing import timing
+from baylmd.timing import timing
 
 import ase.parallel as parallel
 import numpy
