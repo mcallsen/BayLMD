@@ -24,7 +24,7 @@ namespace extensions {
 
 // Generic conversion using 'as'
 
-    // For same type conversion forward the parameter. Hopefully, copy elision will help out here. 
+    // For same type conversion forward the parameter. 
     template<typename T>
     constexpr auto as(T const & x) -> decltype(auto) { return x; }
 
@@ -247,7 +247,7 @@ namespace extensions {
         return indices;
     }
 
-    // Repeat element vector[i] counts[i] times. NOTE: this should be implementable using std::zip
+    // Repeat element vector[i] counts[i] times. NOTE: this should be implementable using std::ranges::fold
     template<typename T>
     auto repeat(std::vector<T> const & container, std::vector<size_t> const & counts) -> std::vector<T> {
         // Expects vector.size() == counts.size()
@@ -375,6 +375,7 @@ namespace extensions {
 
 // Combinatorics
 
+    // Maybe std::cartesian_product?
     inline auto tensor_product(std::vector<size_t> const & indices) -> std::vector<std::vector<int>> {
         std::vector<std::vector<int>> combinations;
         for (auto i: range<int>(-indices[0], indices[0] + 1)) {

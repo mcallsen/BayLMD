@@ -107,7 +107,7 @@ namespace structures {
         auto end() const noexcept { return atoms.end(); }
         auto cend() const noexcept { return atoms.cend(); } 
 
-        auto size() const noexcept -> size_t { return atoms.size(); }
+        auto size() const noexcept -> const size_t { return atoms.size(); }
 
         auto push_back(Atom const & atom) -> void { atoms.push_back(atom); }
         auto push_back(Atom && atom) -> void { atoms.push_back(std::forward<Atom>(atom)); }
