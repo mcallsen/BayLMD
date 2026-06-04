@@ -4,24 +4,12 @@
 #include <fstream>
 #include <string>
 
+#include "math.h"
 #include "mpi.h"
 #include "reader.h"
+#include "tensors.h"
 
 namespace Forcefields {
-    Orbit::Orbit(const Orbits::Orbit & orbit, const structures::Structure & primitive, const structures::StructureTransformer & transformer, const Groups::TranslationGroup & translation_group) : Orbit(orbit.cluster.size(), orbit.row_offset, orbit.cluster.prefactor) {
-        for (const auto & fiber: orbit) {
-            size_t rotation_index = fiber.inverse_rotation().index;
-
-            // Find the defining cluster in the supercell.
-            auto positions = primitive.ijkls_to_fractional(fiber.cluster.sites);
-            auto indices = transformer.get_indices(positions);
-
-            // Add all translated copies to the list of clusters.
-            for (const auto & translation: translation_group) {
-                clusters.push_back(Cluster { translation.transform(indices), rotation_index });
-            }
-        }
-    }
 
     Forcefield::Forcefield(const std::string & file_name, bool parallel, size_t group): my_group(group) {
         if (parallel) {
@@ -136,7 +124,7 @@ namespace Forcefields {
 
     auto Forcefield::get_forces(const std::vector<double> & displacements) -> std::vector<double> {
 
-	    std::fill(forces.begin(), forces.end(), 0.0);
+	    std::ranges::fill(forces, 0.0);
 
 	    //auto t1 = std::chrono::high_resolution_clock::now();
 
@@ -153,7 +141,7 @@ namespace Forcefields {
 
 	    //auto t3 = std::chrono::high_resolution_clock::now();
 
-        mpi::all_reduce(forces, _communicator);
+        mpi::all_reduce<double>(_communicator, forces);
 
 	    //auto t4 = std::chrono::high_resolution_clock::now();
 
@@ -170,7 +158,7 @@ namespace Forcefields {
     auto Forcefield::get_fit_matrix(const std::vector<double> & displacements) -> std::vector<double> {
         calculate_phi(displacements);
         // Collect the results from all the MPI processes.
-        mpi::all_reduce(phi_matrix, _communicator);
+        mpi::all_reduce<double>(_communicator, phi_matrix);
         return phi_matrix;
     }
 
@@ -216,14 +204,14 @@ namespace Forcefields {
         //size_t n_size = displacements.size();
         //std::vector<double> result(n_size * n_parameters, 0.0);
 
-        std::fill(phi_matrix.begin(), phi_matrix.end(), 0.0);
+        std::ranges::fill(phi_matrix, 0.0);
 
         //auto t3 = std::chrono::high_resolution_clock::now();
 
         // Evaluate the Matrix product explicitely. Because tensors is already transposed, this is the scalar product of
         // row vectors of 'matrix' and 'tensors'. Only rows in _interval will be non zero.
         for (size_t i = 0; i < my_rows; i++) {
-	    size_t row_index = (my_start + i) * n_parameters;
+	        size_t row_index = (my_start + i) * n_parameters;
             for (size_t j = 0; j < n_parameters; j++) {
                 auto & tensor = tensors[j];
                 for (size_t k = 0; k < tensor.size(); k++) {
@@ -257,7 +245,7 @@ namespace Forcefields {
 
         //auto t1 = std::chrono::high_resolution_clock::now();
 
-        std::fill(a_matrix.begin(), a_matrix.end(), 0.0);
+        std::ranges::fill(a_matrix, 0.0);
 
         //auto t2 = std::chrono::high_resolution_clock::now();
 
@@ -348,7 +336,8 @@ namespace Forcefields {
         size_t n_size = displacements.size();
         size_t n_atoms = n_size / 3;
 
-	    std::fill(rotated_displacements.begin(), rotated_displacements.end(), 0.0);
+        // Reset rotated_displacements.
+	    std::ranges::fill(rotated_displacements, 0.0);
 
         for (size_t i_symmetry = 0; i_symmetry < n_symmetries; i_symmetry++) {
             for (size_t i_atom = 0; i_atom < n_atoms; i_atom++) {
