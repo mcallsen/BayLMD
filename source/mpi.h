@@ -1,8 +1,8 @@
 #pragma once
 
 #include <optional>
+#include <span>
 #include <utility>
-#include <vector>
 
 #include <mpi.h>
 
@@ -64,26 +64,26 @@ namespace mpi {
     }
 
     template<typename T>
-    auto broadcast(const std::vector<T> & vector, const communicator & comm, size_t process) -> void {
+    auto broadcast(const communicator & comm, std::span<T> vector, size_t process) -> void {
         if (comm) {
             MPI_Bcast(vector.data(), vector.size(), MPItype<T>, process, comm);
         }
     }
 
     template<typename T>
-    auto all_reduce(std::vector<T> & vector, const communicator & comm, const MPI_Op & operation = MPI_SUM) -> void {
+    auto all_reduce(const communicator & comm, std::span<T> vector, const MPI_Op & operation = MPI_SUM) -> void {
         if (comm) {
             MPI_Allreduce(MPI_IN_PLACE, vector.data(), vector.size(), MPItype<T>, operation, comm);
         }
     }
 
     template<typename T>
-    auto sum(std::vector<T> & vector, const communicator & comm) -> void {
+    auto sum(const communicator & comm, std::span<T> vector) -> void {
         all_reduce(vector, comm, MPI_SUM);
     }
 
     template<typename T>
-    auto sum(const T & number, const communicator & comm) -> T {
+    auto sum(const communicator & comm, T number) -> T {
         T result {};
         if (comm) {
             MPI_Allreduce(number, & result, 1, MPItype<T>, MPI_SUM, comm);
@@ -92,10 +92,10 @@ namespace mpi {
     }
 
     struct Interval {
-        size_t first {0};
-        size_t last {0};
+        int first {0};
+        int last {0};
 
-        auto contains(size_t value) const -> bool { return (first <= value) && (value <= last); }
+        auto contains(int value) const -> bool { return (first <= value) && (value <= last); }
         auto size() const -> size_t { return last - first; }
     };
     
@@ -111,10 +111,10 @@ namespace mpi {
 
         // Compute for each rank the number of elements and the starting index in the array
         for (int rank = 0; rank < communicator.size; rank++) {
-            size_t count = total_number / communicator.size;
+            int count = total_number / communicator.size;
             int remaining = total_number % communicator.size;
 
-            size_t start = rank * count;
+            int start = rank * count;
             if (rank < remaining) {
                 start += rank;
                 count += 1;
@@ -134,8 +134,9 @@ namespace mpi {
     }
 
     template<typename T>
-    auto all_gather_v(std::vector<T> & vector, const communicator & comm, const Parallelisation & parallel) -> void {
+    auto all_gather_v(const communicator & comm, std::span<T> vector, const Parallelisation & parallel) -> void {
         if (comm) {
             MPI_Allgatherv(MPI_IN_PLACE, 1, MPItype<T>, vector.data(), parallel.counts.data(), parallel.displacements.data(), MPItype<T>, comm);
         }
-    }}
+    }
+}

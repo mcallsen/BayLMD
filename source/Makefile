@@ -7,7 +7,7 @@ forcefield: $(OBJECTS)
 	mv $@ ../bin/.
 
 lib: $(OBJECTS)
-	$(CXX) $(CXXFLAGS_LIB) forceModelPy.cpp $(OBJECTS) $(LIBS) -o forceModelPy.so
+	$(CXX) $(CXXFLAGS_LIB) _forcefieldpy.cpp $(OBJECTS) $(LIBS) -o forceModelPy.so
 	mv forceModelPy.so ../forcefield_ml/.
 
 main.o: main.cpp

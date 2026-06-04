@@ -1,9 +1,40 @@
 #pragma once
 
+#include <string>
 #include <vector>
+
+#include "extensions.h"
+#include "math.h"
 #include "mpi.h"
+#include "sparse.h"
 
 namespace Forcefields {
+    class Cluster {
+        public:
+        Cluster(const std::vector<size_t> & vector, size_t index): indices(vector), rotation_index(index) {}
+
+        auto operator <=> (const Cluster & other) const = default;
+        auto operator == (const Cluster & other) const -> bool = default;
+
+        std::vector<size_t> indices {};
+        size_t rotation_index {0};
+    };
+
+    class Orbit {
+        public:
+        Orbit(size_t o, size_t i, size_t p): order(o), dimension(Math::power(extensions::as<size_t>(3), o)), tensor_index(i), prefactor(p) {}
+
+        auto operator <=> (const Orbit & other) const = default;
+        auto operator == (const Orbit & other) const -> bool = default;
+
+        std::vector<Cluster> clusters {};
+
+        size_t order {0};
+        size_t dimension {0};
+        size_t tensor_index {0};
+        size_t prefactor {1};
+    };
+
     class Forcefield {
         public:
 
